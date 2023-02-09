@@ -1,4 +1,4 @@
-### This project test out various methods of adding Gradle plugins to a project.
+### This project tests out various methods of adding Gradle plugins to a project.
 
 ##### Build script (build.gradle)
 There's a WhatsTheTimePlugin defined in build.gradle along with an extension interface to get the properties defined in the relevant block.
@@ -11,9 +11,9 @@ The HelloTask is defined in buildSrc/src/main/groovy and registered in build.gra
 
 `./gradlew hello`
 
-The HelloPlugin is also defined in buildSrc and uses the HelloTask, the plugin is applied in build.gradle, run the plugin task with:
+The DayOfWeek plugin is also defined in buildSrc, the plugin is applied in build.gradle, run the plugin's task with:
 
-`./gradlew bonjour`
+`./gradlew dayOfWeek`
 
 #### Standalone project
 Follow the instructions on the [file-based-plugin](https://github.com/leadtrip/file-based-plugin) to deploy to your local maven repo first.
