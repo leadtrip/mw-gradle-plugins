@@ -1,0 +1,9 @@
+// the pluginManagement block is required to pull in the stand alone plugin local maven repo
+pluginManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'mw-gradle-plugins'

@@ -1,0 +1,76 @@
+import wood.mike.DayOfWeekPlugin
+import wood.mike.HelloTask
+
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.FormatStyle
+
+plugins {
+    id 'groovy'
+    id 'wood.mike.file-based-plugin' version '1.0'
+}
+
+group 'wood.mike'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.groovy:groovy:4.0.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// --------------- Plugin defined directly in this file ---------------
+interface WhatsTheTimePluginExtension {
+    Property<String> getMessage()
+    Property<String> getZone()
+}
+
+class WhatsTheTimePlugin implements Plugin<Project> {
+
+    @Override
+    void apply(Project project) {
+        def extension = project.extensions.create('thetime', WhatsTheTimePluginExtension )
+        project.task('whatsthetime') {
+            doLast {
+                def zone = extension.zone.get()
+                String dtsNow = ZonedDateTime.now(ZoneId.of(zone)).format(FormatStyle.MEDIUM);
+                println "${extension.message.get()}, the time in ${zone} is ${dtsNow}"
+            }
+        }
+    }
+}
+
+apply plugin: WhatsTheTimePlugin
+
+thetime {
+    message = 'Hello everyone'
+    zone = "America/New_York"
+}
+
+// --------------- end of plugin defined in this file ---------------
+
+
+// --------------- register the hello task defined in buildSrc ---------------
+tasks.register('hello', HelloTask)
+// --------------- end of register hello task ---------------
+
+
+// --------------- apply the DayOfWeek plugin defined in buildSrc ---------------
+apply plugin: DayOfWeekPlugin
+// --------------- end of applying the bonjour plugin ---------------
+
+// --------------- configuration for standalone file-based-plugin ---------------
+thefile{
+    fileName = 'myfile.txt'
+    contents = "Hello, it's ${LocalDateTime.now().format(FormatStyle.MEDIUM)}".toString()
+}
+// --------------- end of configuration for file-based-plugin ---------------
