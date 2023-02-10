@@ -39,7 +39,7 @@ class WhatsTheTimePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         def extension = project.extensions.create('thetime', WhatsTheTimePluginExtension )
-        project.task('whatsthetime') {
+        project.tasks.register('whatsthetime') {
             doLast {
                 def zone = extension.zone.get()
                 String dtsNow = ZonedDateTime.now(ZoneId.of(zone)).format(FormatStyle.MEDIUM);
